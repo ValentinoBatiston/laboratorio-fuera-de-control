@@ -6,6 +6,23 @@ export class Level3Scene extends Phaser.Scene{
         super("Level3Scene");
     }
 
+    preload() {
+
+        this.load.image("player", "assets/player.png");
+        this.load.image("playerPush", "assets/player_push.png");
+
+        this.load.image("scientist", "assets/scientist.png");
+
+        this.load.image("robot", "assets/robot.png");
+
+        this.load.image("object", "assets/object.png");
+
+        this.load.image("danger", "assets/danger_zone.png");
+
+        this.load.image("floor", "assets/floor.png");
+
+    }
+
     loseLife() {
 
         if (this.invulnerable) {
@@ -90,6 +107,12 @@ export class Level3Scene extends Phaser.Scene{
 
     create() {
 
+        this.add.image(
+            400,
+            300,
+            "floor"
+        ).setDisplaySize(800, 600);
+
         this.invulnerable = false;
 
         this.score = GameData.score;
@@ -148,23 +171,31 @@ export class Level3Scene extends Phaser.Scene{
             }
         );
 
-        this.player = this.add.rectangle(
+        this.dangerZone = this.add.image(
+            400,
+            250,
+            "danger"
+        );
+
+        this.dangerZone.setDisplaySize(100, 100);
+
+        this.player = this.add.image(
             400,
             500,
-            40,
-            40,
-            0x00ff00
+            "player"
         );
 
-        this.robot = this.add.rectangle(
+        this.player.setDisplaySize(48, 48);
+
+        this.robot = this.add.image(
             100,
             150,
-            50,
-            50,
-            0xff0000
+            "robot"
         );
 
-this.robotDirection = 1;
+        this.robot.setDisplaySize(48, 48);
+
+        this.robotDirection = 1;
 
         this.cursors =
             this.input.keyboard.createCursorKeys();
@@ -178,26 +209,18 @@ this.robotDirection = 1;
 
         for(let i = 0; i < 7; i++){
 
-            const scientist = this.add.rectangle(
+            const scientist = this.add.image(
                 150 + (i * 120),
                 250,
-                40,
-                40,
-                0x0099ff
+                "scientist"
             );
+
+            scientist.setDisplaySize(40, 48);
 
             scientist.saved = false;
 
             this.scientists.push(scientist);
         }
-
-        this.dangerZone = this.add.circle(
-            400,
-            250,
-            50,
-            0xff0000,
-            0.4
-        );
 
         this.fallingObject = null;
         this.accidentResolved = false;
@@ -215,17 +238,19 @@ this.robotDirection = 1;
             loop: true
 
         });
+
+        this.createDangerEvent();
     }
 
     dropObject() {
 
-        this.fallingObject = this.add.rectangle(
+        this.fallingObject = this.add.image(
             this.dangerZone.x,
             0,
-            30,
-            30,
-            0xffff00
+            "object"
         );
+
+        this.fallingObject.setDisplaySize(32, 32);
 
     }
 
@@ -346,6 +371,8 @@ this.robotDirection = 1;
             )
         ) {
 
+            this.player.setTexture("playerPush");
+
             const scientist = this.getNearestScientist();
 
             if (!scientist) return;
@@ -369,7 +396,6 @@ this.robotDirection = 1;
                     scientist.saved = true;
 
                     this.rescued++;
-                    GameData.rescued = this.rescued;
 
                     this.rescuedText.setText(
                         "Rescatados: " + this.rescued
@@ -385,6 +411,13 @@ this.robotDirection = 1;
                     console.log("CIENTIFICO SALVADO");
                 }
             }
+
+            this.time.delayedCall(
+                200,
+                () => {
+                    this.player.setTexture("player");
+                }
+            );
         }
 
         if (
