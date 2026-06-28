@@ -1,61 +1,71 @@
 import { GameData } from "../managers/GameData.js";
 
 export class VictoryScene extends Phaser.Scene {
+
     constructor() {
         super("VictoryScene");
     }
 
     create() {
 
-        this.add.text(
-            220,
-            150,
-            "¡VICTORIA!",
-            {
-                fontSize: "48px",
-                color: "#00ff00"
-            }
-        );
+        this.cameras.main.setBackgroundColor("#7f9696");
 
         this.add.text(
-            180,
-            250,
-            "Has salvado el laboratorio",
+            640,
+            120,
+            "¡MISIÓN CUMPLIDA!",
             {
-                fontSize: "28px",
+                fontSize: "54px",
+                fontStyle: "bold",
+                color: "#00ff66"
+            }
+        ).setOrigin(0.5);
+
+        this.add.text(
+            640,
+            240,
+            "Todos los científicos fueron rescatados.",
+            {
+                fontSize: "30px",
                 color: "#ffffff"
             }
-        );
+        ).setOrigin(0.5);
 
         this.add.text(
-            250,
-            320,
-            "Puntaje: " + GameData.score,
+            640,
+            330,
+            "Puntaje Final: " + GameData.score,
             {
-                fontSize: "32px",
+                fontSize: "34px",
                 color: "#ffff00"
             }
-        );
+        ).setOrigin(0.5);
 
-        const button = this.add.text(
-            220,
-            420,
-            "VOLVER AL MENU",
+        const menuButton = this.add.rectangle(
+            640,
+            520,
+            320,
+            70,
+            0xff9800
+        ).setInteractive();
+
+        this.add.text(
+            640,
+            520,
+            "VOLVER AL MENÚ",
             {
                 fontSize: "28px",
-                backgroundColor: "#4f5789",
-                color: "#ffffff",
-                padding: {
-                    x: 10,
-                    y: 10
-                }
+                fontStyle: "bold",
+                color: "#000000"
             }
-        );
+        ).setOrigin(0.5);
 
-        button.setInteractive();
+        menuButton.on("pointerdown", () => {
 
-        button.on("pointerdown", () => {
             this.scene.start("MenuScene");
+
         });
+
     }
+
 }

@@ -97,11 +97,11 @@ export class Level1Scene extends Phaser.Scene {
 
         this.dangerZone = this.add.image(
             400,
-            250,
+            330,
             "danger"
         );
 
-        this.dangerZone.setDisplaySize(100, 100);
+        this.dangerZone.setDisplaySize(128, 128);
     
         this.invulnerable = false;
 
@@ -110,12 +110,12 @@ export class Level1Scene extends Phaser.Scene {
         for(let i = 0; i < 3; i++){
 
             const scientist = this.add.image(
-                150 + (i * 120),
-                250,
+                150 + (i * 450),
+                320,
                 "scientist"
             );
 
-            scientist.setDisplaySize(40, 48);
+            scientist.setDisplaySize(100, 100);
 
             scientist.saved = false;
 
@@ -157,7 +157,7 @@ export class Level1Scene extends Phaser.Scene {
             );
 
         this.scoreText = this.add.text(
-            20,
+            40,
             20,
             "Puntos: 0",
             {
@@ -167,8 +167,8 @@ export class Level1Scene extends Phaser.Scene {
         );
 
         this.livesText = this.add.text(
+            550,
             20,
-            50,
             "Vidas: 3",
             {
                 fontSize: "24px",
@@ -177,42 +177,43 @@ export class Level1Scene extends Phaser.Scene {
         );
 
         this.rescuedText = this.add.text(
+            1000,
             20,
-            80,
-            "Rescatados: 0",
+            "Rescatados: 0/3",
             {
                 fontSize: "24px",
                 color: "#ffffff"
             }
         );
 
-        this.goalText = this.add.text(
-            20,
-            110,
-            "Objetivo: 3 rescates",
+        this.add.text(
+            350,
+            70,
+            "LABORATORIO FUERA DE CONTROL",
             {
-                fontSize: "24px",
-                color: "#ffff00"
+                fontSize: "34px",
+                color: "#ffffff",
+                fontStyle: "bold"
             }
         );
 
         this.add.text(
-            300,
-            50,
+            550,
+            120,
             "NIVEL 1",
             {
-                fontSize: "32px",
+                fontSize: "28px",
                 color: "#ffffff"
             }
         );
 
         this.player = this.add.image(
-            400,
-            500,
+            600,
+            550,
             "player"
         );
 
-        this.player.setDisplaySize(48, 48);
+        this.player.setDisplaySize(100, 100);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -227,7 +228,7 @@ export class Level1Scene extends Phaser.Scene {
             "object"
         );
 
-        this.fallingObject.setDisplaySize(32, 32);
+        this.fallingObject.setDisplaySize(64, 64);
 
     }
 
@@ -259,7 +260,7 @@ export class Level1Scene extends Phaser.Scene {
     completeLevel() {
 
         const text = this.add.text(
-            220,
+            450,
             250,
             "NIVEL COMPLETADO",
             {
@@ -355,7 +356,7 @@ export class Level1Scene extends Phaser.Scene {
                     this.rescued++;
 
                     this.rescuedText.setText(
-                        "Rescatados: " + this.rescued
+                        "Rescatados: " + this.rescued + " /3"
                     );
 
                     this.score += 100;

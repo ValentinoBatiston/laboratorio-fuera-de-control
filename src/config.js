@@ -8,24 +8,25 @@ import { VictoryScene } from "./scenes/VictoryScene.js";
 export const config = {
     type: Phaser.AUTO,
 
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
 
-    backgroundColor: "#1d2030",
+    scale: {
 
-    physics: {
-        default: "arcade",
-        arcade: {
-            debug: false
-        }
+        mode: Phaser.Scale.FIT,
+
+        autoCenter: Phaser.Scale.CENTER_BOTH
+
     },
+
+    backgroundColor: "#4f5789",
 
     scene: [
         MenuScene,
         Level1Scene,
         Level2Scene,
         Level3Scene,
-        GameOverScene,
-        VictoryScene
+        VictoryScene,
+        GameOverScene
     ]
 };

@@ -8,44 +8,95 @@ export class GameOverScene extends Phaser.Scene {
 
     create() {
 
-        this.add.text(
-            250,
-            180,
-            "GAME OVER",
-            {
-                fontSize: "48px",
-                color: "#ff0000"
-            }
-        );
+        this.cameras.main.setBackgroundColor("#7f9696");
 
         this.add.text(
-            250,
-            260,
+            640,
+            120,
+            "GAME OVER",
+            {
+                fontSize: "60px",
+                fontStyle: "bold",
+                color: "#ff4444"
+            }
+        ).setOrigin(0.5);
+
+        this.add.text(
+            640,
+            230,
+            "El laboratorio quedó fuera de control.",
+            {
+                fontSize: "28px",
+                color: "#ffffff"
+            }
+        ).setOrigin(0.5);
+
+        this.add.text(
+            640,
+            310,
             "Puntaje: " + GameData.score,
             {
                 fontSize: "32px",
-                color: "#ffffff"
+                color: "#ffff00"
             }
-        );
+        ).setOrigin(0.5);
 
-        const button = this.add.text(
-            280,
-            360,
-            "VOLVER AL MENU",
+        const retryButton = this.add.rectangle(
+            640,
+            470,
+            300,
+            65,
+            0xff9800
+        ).setInteractive();
+
+        this.add.text(
+            640,
+            470,
+            "REINTENTAR",
             {
                 fontSize: "28px",
-                backgroundColor: "#4f5789",
-                padding: 10
+                fontStyle: "bold",
+                color: "#000000"
             }
-        );
+        ).setOrigin(0.5);
 
-        button.setInteractive();
+        retryButton.on("pointerdown", () => {
 
-        button.on("pointerdown", () => {
+            GameData.score = 0;
+            GameData.lives = 3;
+
+            this.scene.start("Level1Scene");
+
+        });
+
+        const menuButton = this.add.rectangle(
+            640,
+            560,
+            300,
+            65,
+            0xff9800
+        ).setInteractive();
+
+        this.add.text(
+            640,
+            560,
+            "MENÚ PRINCIPAL",
+            {
+                fontSize: "26px",
+                fontStyle: "bold",
+                color: "#000000"
+            }
+        ).setOrigin(0.5);
+
+        menuButton.on("pointerdown", () => {
+
+            GameData.score = 0;
+            GameData.lives = 3;
 
             this.scene.start("MenuScene");
 
         });
 
     }
+
 }

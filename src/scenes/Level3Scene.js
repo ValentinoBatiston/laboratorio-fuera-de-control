@@ -111,7 +111,7 @@ export class Level3Scene extends Phaser.Scene{
             400,
             300,
             "floor"
-        ).setDisplaySize(800, 600);
+        ).setDisplaySize(1920, 1080);
 
         this.invulnerable = false;
 
@@ -122,19 +122,31 @@ export class Level3Scene extends Phaser.Scene{
         this.levelCompleted = false;
 
         this.add.text(
-            300,
-            20,
+            550,
+            120,
             "NIVEL 3",
             {
-                fontSize: "32px",
+                fontSize: "28px",
                 color: "#ffffff"
             }
         );
 
+        this.add.text(
+            350,
+            70,
+            "LABORATORIO FUERA DE CONTROL",
+            {
+                fontSize: "34px",
+                color: "#ffffff",
+                fontStyle: "bold"
+            }
+        );
+
+
         this.scoreText = this.add.text(
+            40,
             20,
-            20,
-            "Puntos: " + this.score,
+            "Puntos: 0",
             {
                 fontSize: "24px",
                 color: "#ffffff"
@@ -142,9 +154,9 @@ export class Level3Scene extends Phaser.Scene{
         );
 
         this.livesText = this.add.text(
+            550,
             20,
-            50,
-            "Vidas: " + this.lives,
+            "Vidas: 3",
             {
                 fontSize: "24px",
                 color: "#ffffff"
@@ -152,48 +164,38 @@ export class Level3Scene extends Phaser.Scene{
         );
 
         this.rescuedText = this.add.text(
+            1000,
             20,
-            80,
-            "Rescatados: " + this.rescued,
+            "Rescatados: 0/7",
             {
                 fontSize: "24px",
                 color: "#ffffff"
             }
         );
 
-        this.goalText = this.add.text(
-            20,
-            110,
-            "Objetivo: 7 rescates",
-            {
-                fontSize: "24px",
-                color: "#ffff00"
-            }
-        );
-
         this.dangerZone = this.add.image(
             400,
-            250,
+            260,
             "danger"
         );
 
-        this.dangerZone.setDisplaySize(100, 100);
+        this.dangerZone.setDisplaySize(128, 128);
 
         this.player = this.add.image(
-            400,
-            500,
+            600,
+            550,
             "player"
         );
 
-        this.player.setDisplaySize(48, 48);
+        this.player.setDisplaySize(100, 100);
 
         this.robot = this.add.image(
-            100,
             150,
+            400,
             "robot"
         );
 
-        this.robot.setDisplaySize(48, 48);
+        this.robot.setDisplaySize(100, 100);
 
         this.robotDirection = 1;
 
@@ -210,12 +212,12 @@ export class Level3Scene extends Phaser.Scene{
         for(let i = 0; i < 7; i++){
 
             const scientist = this.add.image(
-                150 + (i * 120),
+                150 + (i * 160),
                 250,
                 "scientist"
             );
 
-            scientist.setDisplaySize(40, 48);
+            scientist.setDisplaySize(100, 100);
 
             scientist.saved = false;
 
@@ -250,7 +252,7 @@ export class Level3Scene extends Phaser.Scene{
             "object"
         );
 
-        this.fallingObject.setDisplaySize(32, 32);
+        this.fallingObject.setDisplaySize(64, 64);
 
     }
 
@@ -282,7 +284,7 @@ export class Level3Scene extends Phaser.Scene{
     completeLevel() {
 
         const text = this.add.text(
-            220,
+            450,
             250,
             "NIVEL COMPLETADO",
             {
@@ -398,7 +400,7 @@ export class Level3Scene extends Phaser.Scene{
                     this.rescued++;
 
                     this.rescuedText.setText(
-                        "Rescatados: " + this.rescued
+                        "Rescatados: " + this.rescued + " /7"
                     );
 
                     this.score += 100;
