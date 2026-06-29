@@ -54,6 +54,9 @@ export class MenuScene extends Phaser.Scene {
 
         playButton.on("pointerdown", () => {
 
+            GameData.score = 0;
+            GameData.lives = 3;
+
             this.scene.start("Level1Scene");
 
         });

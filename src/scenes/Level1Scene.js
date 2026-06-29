@@ -52,6 +52,36 @@ export class Level1Scene extends Phaser.Scene {
         }
     }
 
+    checkScientistHit() {
+
+        for (const scientist of this.scientists) {
+
+            if (this.isScientistInDanger(scientist)) {
+
+                GameData.lives--;
+
+                GameData.score = Math.max(0, GameData.score - 100);
+                this.score = GameData.score;
+
+                this.scoreText.setText(
+                    "Puntos: " + this.score
+                );
+
+                this.livesText.setText(
+                    "Vidas: " + GameData.lives
+                );
+
+                if (GameData.lives <= 0) {
+
+                    this.scene.start("GameOverScene");
+
+                }
+
+                break;
+            }
+        }
+    }
+
     getNearestScientist() {
 
         let nearest = null;
@@ -87,7 +117,17 @@ export class Level1Scene extends Phaser.Scene {
         }
     }
 
+    isScientistInDanger(scientist) {
+
+        return Math.abs(
+            scientist.x - this.dangerZone.x
+        ) < 60;
+
+    }   
+
     create() {
+
+        this.rescueGoal = 3;
 
         this.add.image(
             400,
@@ -116,8 +156,6 @@ export class Level1Scene extends Phaser.Scene {
             );
 
             scientist.setDisplaySize(100, 100);
-
-            scientist.saved = false;
 
             this.scientists.push(scientist);
         }
@@ -159,7 +197,7 @@ export class Level1Scene extends Phaser.Scene {
         this.scoreText = this.add.text(
             40,
             20,
-            "Puntos: 0",
+            "Puntos: " + this.score,
             {
                 fontSize: "24px",
                 color: "#ffffff"
@@ -169,7 +207,7 @@ export class Level1Scene extends Phaser.Scene {
         this.livesText = this.add.text(
             550,
             20,
-            "Vidas: 3",
+            "Vidas: " + GameData.lives,
             {
                 fontSize: "24px",
                 color: "#ffffff"
@@ -229,6 +267,8 @@ export class Level1Scene extends Phaser.Scene {
         );
 
         this.fallingObject.setDisplaySize(64, 64);
+
+        this.checkScientistHit();
 
     }
 
@@ -300,36 +340,69 @@ export class Level1Scene extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.cursors.space)) {
 
-            this.score += 100;
+            const scientist = this.getNearestScientist();
 
-            this.scoreText.setText(
-                "Puntos: " + this.score
+            if (!scientist) return;
+
+            const distance = Phaser.Math.Distance.Between(
+                this.player.x,
+                this.player.y,
+                scientist.x,
+                scientist.y
             );
+
+            if (
+                distance < 70 &&
+                !this.isScientistInDanger(scientist)
+            ) {
+
+                scientist.destroy();
+
+                this.scientists =
+                    this.scientists.filter(
+                        s => s !== scientist
+                    );
+
+                this.score += 100;
+                this.rescued++;
+
+                GameData.score = this.score;
+
+                this.scoreText.setText(
+                    "Puntos: " + this.score
+                );
+
+                this.rescuedText.setText(
+                    "Rescatados: " + this.rescued + "/3"
+                );
+            }
         }
 
         if (this.cursors.left.isDown) {
-            this.player.x -= 3;
+            this.player.x -= 4;
+            this.player.setFlipX(true);
         }
 
         if (this.cursors.right.isDown) {
-            this.player.x += 3;
+            this.player.x += 4;
+            this.player.setFlipX(false);
         }
 
         if (this.cursors.up.isDown) {
-            this.player.y -= 3;
+            this.player.y -= 4;
         }
 
         if (this.cursors.down.isDown) {
-            this.player.y += 3;
+            this.player.y += 4;
         }
 
-        if (
-            Phaser.Input.Keyboard.JustDown(
-                this.pushKey
-            )
-        ) {
+        if (Phaser.Input.Keyboard.JustDown(this.pushKey)) {
 
             this.player.setTexture("playerPush");
+
+            this.time.delayedCall(200, () => {
+                this.player.setTexture("player");
+            });
 
             const scientist = this.getNearestScientist();
 
@@ -344,38 +417,31 @@ export class Level1Scene extends Phaser.Scene {
 
             if (distance < 70) {
 
-                scientist.x += 80;
+                if (!this.isScientistInDanger(scientist)) {
 
-                if (
-                    !scientist.saved &&
-                    scientist.x > this.dangerZone.x + 60
-                ) {
-
-                    scientist.saved = true;
-
-                    this.rescued++;
-
-                    this.rescuedText.setText(
-                        "Rescatados: " + this.rescued + " /3"
-                    );
-
-                    this.score += 100;
+                    // Ya estaba fuera de peligro
+                    this.score = Math.max(0, this.score - 50);
                     GameData.score = this.score;
 
                     this.scoreText.setText(
                         "Puntos: " + this.score
                     );
 
-                    console.log("CIENTIFICO SALVADO");
+                } else {
+
+                    scientist.x += 80;
+
+                    if (!this.isScientistInDanger(scientist)) {
+
+                        this.score += 50;
+                        GameData.score = this.score;
+
+                        this.scoreText.setText(
+                            "Puntos: " + this.score
+                        );
+                    }
                 }
             }
-
-            this.time.delayedCall(
-                200,
-                () => {
-                    this.player.setTexture("player");
-                }
-            );
         }
 
         if (
