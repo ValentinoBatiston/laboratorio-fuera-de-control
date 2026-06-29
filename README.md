@@ -150,6 +150,8 @@ laboratorio-fuera-de-control/
 
 ## Link al juego
 
+https://valentinobatiston.github.io/laboratorio-fuera-de-control/
+
 ---
 
 ## Ejecutar el juego localmente
@@ -172,19 +174,19 @@ git clone https://github.com/ValentinoBatiston/laboratorio-fuera-de-control
 
 Menú principal
 
-![alt text](image.png)
+![alt text](captura-menu.png)
 
 Nivel 1
 
-![alt text](image-1.png)
+![alt text](captura-nivel-1.png)
 
 Nivel 3
 
-![alt text](image-2.png)
+![alt text](captura-nivel-3.png)
 
 Pantalla de Victoria
 
-![alt text](image-3.png)
+![alt text](captura-victoria.png)
 
 ## 📈 Desarrollo
 
