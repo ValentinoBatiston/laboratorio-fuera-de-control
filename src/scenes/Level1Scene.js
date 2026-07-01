@@ -8,7 +8,7 @@ export class Level1Scene extends Phaser.Scene {
 
     preload() {
 
-        this.load.image("player", "assets/player.png");
+        this.load.image("player", "assets/Player.png");
         this.load.image("playerPush", "assets/player_push.png");
 
         this.load.image("scientist", "assets/scientist.png");
